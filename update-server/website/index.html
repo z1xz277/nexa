@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="description" content="Nexa is a focused Windows desktop workspace for code, files, terminals, and controlled agent runs." />
+  <title>Nexa for Windows 11</title>
+  <style>
+    :root{color-scheme:light;--bg:#fff;--ink:#000;--muted:#5f5f5f;--line:#e4e4e4;--surface:#f6f6f6;--radius:18px}
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:Inter,"Segoe UI",sans-serif}
+    body{min-height:100vh}a,button{-webkit-tap-highlight-color:transparent}button{font:inherit}
+    .shell{max-width:1180px;margin:auto;padding:28px 40px;min-height:100vh;display:flex;flex-direction:column}
+    header{display:flex;align-items:center;gap:11px}header svg{width:25px;height:25px}header strong{font-size:18px;font-weight:650;letter-spacing:-.04em}
+    .platform{margin-left:auto;border:1px solid var(--line);border-radius:999px;padding:7px 12px;color:var(--muted);font-size:11px}
+    main{flex:1;padding:86px 0 72px;display:grid;grid-template-columns:1fr 1.05fr;gap:72px;align-items:center}
+    .eyebrow{font:11px/1.4 ui-monospace,"Cascadia Code",monospace;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+    h1{font-size:clamp(46px,5.6vw,76px);line-height:1;letter-spacing:-.06em;font-weight:600;margin:20px 0 24px;max-width:560px}
+    .lede{max-width:500px;color:var(--muted);font-size:16px;line-height:1.7;margin:0 0 30px}
+    .download{display:inline-flex;align-items:center;gap:12px;border:1px solid var(--ink);border-radius:12px;background:var(--ink);color:#fff;padding:15px 20px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .16s,color .16s}
+    .download:hover{background:#fff;color:#000}.download:active{background:#e8e8e8}.download[aria-disabled="true"]{opacity:.45;cursor:wait;pointer-events:none}
+    .meta{font:11px/1.7 ui-monospace,"Cascadia Code",monospace;color:var(--muted);margin-top:13px;min-height:19px;overflow-wrap:anywhere}
+    .access-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:30px}
+    .access-list span{border:1px solid var(--line);border-radius:999px;padding:7px 11px;font-size:11px;color:var(--muted)}
+    .preview{border:1px solid var(--line);border-radius:22px;background:var(--surface);padding:14px;box-shadow:0 22px 65px #0000000d}
+    .window{height:390px;border:1px solid #d8d8d8;border-radius:12px;background:#fff;overflow:hidden;display:flex;flex-direction:column}
+    .titlebar{height:36px;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 13px;gap:8px}
+    .titlebar .mark{width:15px;height:15px}.titlebar .name{font-size:10px;font-weight:650}.window-controls{margin-left:auto;display:flex;gap:12px;color:#8a8a8a;font-size:10px}
+    .workspace{flex:1;display:grid;grid-template-columns:124px 1fr}
+    .sidebar{border-right:1px solid var(--line);padding:15px 10px;background:#fafafa}
+    .sidebar .label{font:8px ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:#929292;margin:0 6px 8px}
+    .project{display:flex;align-items:center;gap:7px;border-radius:6px;background:#ededed;padding:7px;font-size:9px;font-weight:600}
+    .folder{width:10px;height:8px;border:1px solid #777;border-radius:2px}.session{padding:8px 7px;color:#777;font-size:9px}
+    .content{padding:45px 25px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+    .content h2{font-size:23px;letter-spacing:-.045em;margin:0 0 19px;font-weight:550;text-align:center}
+    .askbar{width:100%;border:1px solid #cfcfcf;border-radius:12px;padding:12px;box-shadow:0 3px 12px #00000008}
+    .placeholder{color:#8c8c8c;font-size:9px}.askbar-bottom{margin-top:20px;display:flex;align-items:center;gap:7px}
+    .mode{border:1px solid var(--line);border-radius:6px;padding:5px 7px;font-size:8px}.send{margin-left:auto;width:22px;height:22px;border-radius:6px;background:#000;color:#fff;display:grid;place-items:center;font-size:11px}
+    .hint{position:absolute;bottom:11px;font-size:8px;color:#929292}
+    footer{border-top:1px solid var(--line);padding-top:20px;display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:11px}
+    a:focus-visible{outline:2px solid #000;outline-offset:4px}
+    @media(max-width:850px){.shell{padding:24px 22px}main{grid-template-columns:1fr;gap:48px;padding:60px 0}.preview{width:100%;max-width:540px}footer{flex-direction:column;gap:8px}}
+    @media(max-width:480px){.workspace{grid-template-columns:92px 1fr}.content{padding:35px 14px 20px}.sidebar{padding:14px 7px}.window{height:350px}.content h2{font-size:19px}}
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs><symbol id="nexa-mark" viewBox="0 0 1024 1024"><path d="M236 768C236 506 414 326 768 236C768 566 626 768 236 768ZM326 674L354 702L702 354L674 326Z" fill="currentColor" fill-rule="evenodd"/></symbol></defs>
+  </svg>
+  <div class="shell">
+    <header>
+      <svg aria-hidden="true"><use href="#nexa-mark"/></svg>
+      <strong>nexa</strong><span class="platform">Windows 11</span>
+    </header>
+    <main>
+      <section>
+        <div class="eyebrow">Code, files, terminal, and agent runs</div>
+        <h1>A focused workspace for code.</h1>
+        <p class="lede">Inspect a project, make changes, run commands, and review every action from one quiet desktop app. Choose exactly how much access an agent run receives.</p>
+        <a id="download" class="download" aria-disabled="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 17v4h16v-4"/></svg>
+          <span id="download-label">Preparing download</span>
+        </a>
+        <div id="meta" class="meta">Checking the latest release.</div>
+        <div class="access-list" aria-label="Access modes"><span>Ask: read only</span><span>Agent: approve changes</span><span>Full Access: Windows command permissions</span></div>
+      </section>
+      <section class="preview" aria-label="Nexa workspace preview">
+        <div class="window">
+          <div class="titlebar"><svg class="mark" aria-hidden="true"><use href="#nexa-mark"/></svg><span class="name">nexa</span><span class="window-controls"><span>−</span><span>□</span><span>×</span></span></div>
+          <div class="workspace">
+            <aside class="sidebar"><div class="label">Projects</div><div class="project"><span class="folder"></span>my-project</div><div class="label" style="margin-top:22px">Sessions</div><div class="session">Review project</div><div class="session">Fix build errors</div></aside>
+            <div class="content"><h2>What are we working on?</h2><div class="askbar"><div class="placeholder">Describe a task, ask a question, or mention a file</div><div class="askbar-bottom"><span class="mode">Agent</span><span class="mode">Medium</span><span class="send">↑</span></div></div><div class="hint">File tools stay inside your selected folder</div></div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer><span>Nexa for Windows 11</span><span>Code context goes to your selected provider. Credentials stay on your PC.</span></footer>
+  </div>
+  <script>
+    fetch('/api/latest').then(r=>{if(!r.ok)throw new Error('No release');return r.json()}).then(x=>{
+      if(typeof x.url!=='string'||typeof x.version!=='string'||typeof x.sha512!=='string')throw new Error('Invalid release');
+      const a=document.getElementById('download');a.href=x.url;a.removeAttribute('aria-disabled');a.download='';
+      document.getElementById('download-label').textContent='Download for Windows 11';
+      const size=Number.isFinite(x.size)?` · ${(x.size/1048576).toFixed(1)} MB`:'';
+      document.getElementById('meta').textContent=`Nexa ${x.version}${size} · SHA-512 ${x.sha512.slice(0,12)}…`;
+    }).catch(()=>{
+      document.getElementById('download-label').textContent='Download unavailable';
+      document.getElementById('meta').textContent='No published release yet. Please check back shortly.';
+    });
+  </script>
+</body>
+</html>

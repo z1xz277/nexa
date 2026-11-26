@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Nexa leaf</title>
+  <defs>
+    <mask id="vein" maskUnits="userSpaceOnUse" x="12" y="12" width="40" height="40">
+      <rect x="12" y="12" width="40" height="40" fill="#FFF"/>
+      <path d="M20.375 42.125 L43.875 22.125 L42.125 20.375 L20.375 42.125 Z" fill="#000"/>
+    </mask>
+  </defs>
+  <path d="M14.75 48 C14.75 31.625 25.875 20.375 48 14.75 C48 35.375 39.125 48 14.75 48 Z M20.375 42.125 L22.125 43.875 L43.875 22.125 L42.125 20.375 Z" fill="#000" fill-rule="evenodd" mask="url(#vein)"/>
+</svg>

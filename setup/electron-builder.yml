@@ -1,0 +1,40 @@
+appId: nexa.desktop.setup
+productName: Nexa Setup
+executableName: NexaSetup
+
+directories:
+  output: release
+  buildResources: build
+
+files:
+  - src/**/*
+  - assets/**/*
+  - package.json
+
+extraResources:
+  - from: payload
+    to: payload
+    filter:
+      - "**/*"
+
+asar: true
+asarUnpack:
+  - assets/fonts/**
+
+win:
+  target:
+    - target: portable
+      arch:
+        - x64
+  requestedExecutionLevel: asInvoker
+  icon: build/icon.ico
+  artifactName: NexaSetup.exe
+
+portable:
+  artifactName: NexaSetup.exe
+  requestExecutionLevel: user
+  unpackDirName: false
+
+# Code signing can be enabled here for release builds.
+# certificateFile: path/to/certificate.p12
+# certificatePassword: ${WIN_CSC_KEY_PASSWORD}

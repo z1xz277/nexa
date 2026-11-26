@@ -1,0 +1,49 @@
+{
+  "name": "nexa",
+  "productName": "nexa",
+  "version": "1.0.0",
+  "description": "A focused desktop workspace for coding and controlled agent runs.",
+  "author": "Nexa",
+  "main": "out/main/index.js",
+  "private": true,
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build && node scripts/check-build.mjs",
+    "start": "electron-vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "node --import ./tests/register-aliases.mjs --test tests",
+    "preview": "vite --config vite.preview.config.ts",
+    "smoke": "npm run build && electron . --smoke",
+    "generate:icons": "node scripts/generate-icons.mjs",
+    "setup": "node setup/scripts/harness-link.js .",
+    "server:updates": "node update-server/server.mjs",
+    "publish:update": "node scripts/publish-update.mjs"
+  },
+  "dependencies": {
+    "@fontsource/geist-mono": "^5.2.5",
+    "@fontsource/geist-sans": "^5.2.5",
+    "@lobehub/icons": "^2.0.0",
+    "@xterm/addon-fit": "^0.10.0",
+    "@xterm/xterm": "^5.5.0",
+    "electron-updater": "^6.8.11",
+    "framer-motion": "^12.15.0",
+    "monaco-editor": "^0.52.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "zod": "^3.25.0",
+    "zustand": "^5.0.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.8",
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^4.5.0",
+    "electron": "^37.0.0",
+    "electron-vite": "^3.1.0",
+    "puppeteer-core": "^25.18.1",
+    "tailwindcss": "^4.1.8",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5"
+  }
+}

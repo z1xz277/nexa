@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nexa Setup</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <canvas id="background" aria-hidden="true"></canvas>
+
+  <main class="shell">
+    <header class="titlebar">
+      <button class="window-button" id="minimize-button" type="button" aria-label="Minimize">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5 H13"/></svg>
+      </button>
+      <button class="window-button" id="close-button" type="button" aria-label="Close">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4 L12 12 M12 4 L4 12"/></svg>
+      </button>
+    </header>
+
+    <section class="brand-column" aria-label="Nexa">
+      <div class="brand-lockup">
+        <svg class="brand-leaf" id="brand-leaf" viewBox="0 0 64 64" role="img" aria-label="Nexa leaf">
+          <defs>
+            <mask id="leaf-vein" maskUnits="userSpaceOnUse" x="12" y="12" width="40" height="40">
+              <rect x="12" y="12" width="40" height="40" fill="#FFF"/>
+              <path d="M20.375 42.125 L43.875 22.125 L42.125 20.375 L20.375 42.125 Z" fill="#000"/>
+            </mask>
+            <clipPath id="leaf-fill-clip">
+              <rect class="leaf-clip-rect" x="12" y="12" width="40" height="40"/>
+            </clipPath>
+          </defs>
+          <path class="leaf-outline" pathLength="1" d="M14.75 48 C14.75 31.625 25.875 20.375 48 14.75 C48 35.375 39.125 48 14.75 48 Z" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <g class="leaf-fill" fill-rule="evenodd" clip-path="url(#leaf-fill-clip)" mask="url(#leaf-vein)">
+            <path d="M14.75 48 C14.75 31.625 25.875 20.375 48 14.75 C48 35.375 39.125 48 14.75 48 Z M20.375 42.125 L22.125 43.875 L43.875 22.125 L42.125 20.375 Z" fill="currentColor"/>
+          </g>
+        </svg>
+        <div class="wordmark">Nexa</div>
+      </div>
+      <div class="brand-version mono muted" id="brand-version">Version</div>
+      <div class="brand-footer">
+        <div class="eyebrow" id="brand-mode">Windows 11 installer</div>
+        <div class="step-index mono" id="step-index">01 / 04</div>
+      </div>
+    </section>
+
+    <section class="content-column" aria-live="off">
+      <section class="screen" id="welcome-screen" data-screen="welcome">
+        <div class="stagger">
+          <div class="eyebrow">Desktop setup</div>
+          <h1>Nexa</h1>
+          <p class="lede muted">A quiet, focused place to work.</p>
+        </div>
+        <div class="stagger welcome-meta">
+          <div class="mono meta-row"><span class="muted">Version</span><span id="welcome-version"></span></div>
+          <div class="mono meta-row"><span class="muted">Install size</span><span id="welcome-size"></span></div>
+          <div class="dev-label mono" id="dev-label" hidden>Development mode</div>
+        </div>
+        <div class="stagger actions">
+          <button class="button primary" id="install-button" type="button" disabled>Install</button>
+          <button class="button text-button" id="customize-button" type="button" disabled>Customize</button>
+        </div>
+      </section>
+
+      <section class="screen" id="customize-screen" data-screen="customize" hidden>
+        <div class="stagger">
+          <div class="eyebrow">Install options</div>
+          <h1>Make it yours</h1>
+          <p class="lede muted">Choose where Nexa should live.</p>
+        </div>
+        <form class="stagger options-form" id="options-form">
+          <label class="field-label" for="install-path">Install folder</label>
+          <div class="path-row">
+            <input class="mono" id="install-path" name="installPath" type="text" autocomplete="off" spellcheck="false">
+            <button class="button text-button browse-button" id="browse-button" type="button">Browse</button>
+          </div>
+          <div class="path-feedback mono" id="path-feedback" aria-live="polite"></div>
+
+          <label class="check-row">
+            <input id="desktop-shortcut" type="checkbox" checked>
+            <span>Desktop shortcut</span>
+          </label>
+          <label class="check-row">
+            <input id="start-menu-shortcut" type="checkbox" checked>
+            <span>Start menu shortcut</span>
+          </label>
+          <label class="check-row">
+            <input id="launch-when-finished" type="checkbox" checked>
+            <span>Launch when finished</span>
+          </label>
+        </form>
+        <div class="stagger actions split-actions">
+          <button class="button primary" id="customize-install-button" type="button" disabled>Install</button>
+          <button class="button text-button" id="back-button" type="button">Back</button>
+        </div>
+      </section>
+
+      <section class="screen" id="installing-screen" data-screen="installing" hidden>
+        <div class="stagger">
+          <div class="eyebrow" id="installing-eyebrow">Installing</div>
+          <div class="percentage mono" id="install-percentage" aria-hidden="true">0.0%</div>
+        </div>
+        <div class="stagger progress-block">
+          <div class="progress-track" id="install-progress" role="progressbar" aria-label="Installation progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="progress-fill" id="install-progress-fill"></div>
+            <div class="progress-highlight"></div>
+          </div>
+          <div class="progress-meta">
+            <div class="status-line" id="install-status" role="status" aria-live="polite">Preparing</div>
+            <div class="mono muted" id="install-eta">Estimating</div>
+          </div>
+        </div>
+        <div class="stagger actions">
+          <button class="button text-button" id="cancel-install-button" type="button">Cancel</button>
+        </div>
+      </section>
+
+      <section class="screen" id="done-screen" data-screen="done" hidden>
+        <div class="stagger">
+          <div class="eyebrow">Setup complete</div>
+          <h1>Nexa is ready</h1>
+          <p class="lede muted" id="done-message">Your installation is complete.</p>
+        </div>
+        <div class="stagger actions">
+          <button class="button primary" id="launch-button" type="button">Launch</button>
+          <button class="button text-button" id="done-close-button" type="button">Close</button>
+        </div>
+      </section>
+
+      <section class="screen" id="error-screen" data-screen="error" hidden>
+        <div class="stagger">
+          <div class="eyebrow">Something went wrong</div>
+          <h1 id="error-title">Setup could not finish</h1>
+          <p class="lede" id="error-message"></p>
+          <p class="cause muted" id="error-cause"></p>
+        </div>
+        <div class="stagger actions">
+          <button class="button primary" id="retry-button" type="button">Retry</button>
+          <button class="button text-button" id="show-log-button" type="button">Show log</button>
+          <button class="button text-button" id="error-close-button" type="button">Close</button>
+        </div>
+      </section>
+
+      <section class="screen" id="uninstall-confirm-screen" data-screen="uninstall-confirm" hidden>
+        <div class="stagger">
+          <div class="eyebrow">Uninstall</div>
+          <h1>Remove Nexa?</h1>
+          <p class="lede muted">This removes the app, its shortcuts, and its uninstall entry.</p>
+        </div>
+        <div class="stagger uninstall-details">
+          <div class="mono meta-row"><span class="muted">Version</span><span id="uninstall-version"></span></div>
+          <div class="mono path-preview" id="uninstall-path"></div>
+          <label class="check-row">
+            <input id="remove-data" type="checkbox">
+            <span>Also remove my settings and data</span>
+          </label>
+        </div>
+        <div class="stagger actions">
+          <button class="button primary" id="remove-button" type="button" disabled>Remove</button>
+          <button class="button text-button" id="uninstall-cancel-button" type="button">Cancel</button>
+        </div>
+      </section>
+
+      <section class="screen" id="uninstalling-screen" data-screen="uninstalling" hidden>
+        <div class="stagger">
+          <div class="eyebrow">Removing</div>
+          <div class="percentage mono" id="uninstall-percentage" aria-hidden="true">0.0%</div>
+        </div>
+        <div class="stagger progress-block">
+          <div class="progress-track" id="uninstall-progress" role="progressbar" aria-label="Removal progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="progress-fill" id="uninstall-progress-fill"></div>
+            <div class="progress-highlight"></div>
+          </div>
+          <div class="progress-meta">
+            <div class="status-line" id="uninstall-status" role="status" aria-live="polite">Preparing</div>
+            <div class="mono muted">Please keep this window open.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="uninstall-done-screen" data-screen="uninstall-done" hidden>
+        <div class="stagger">
+          <div class="eyebrow">Removal complete</div>
+          <h1>Nexa has been removed</h1>
+          <p class="lede muted" id="uninstall-done-message">The app and its shortcuts have been removed.</p>
+        </div>
+        <div class="stagger actions">
+          <button class="button primary" id="uninstall-done-close-button" type="button">Close</button>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="modal-backdrop" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-message">
+      <h2 id="modal-title"></h2>
+      <p id="modal-message"></p>
+      <div class="modal-actions">
+        <button class="button primary" id="modal-confirm" type="button"></button>
+        <button class="button text-button" id="modal-cancel" type="button"></button>
+      </div>
+    </section>
+  </div>
+
+  <noscript>This installer needs JavaScript enabled.</noscript>
+  <script src="background.js"></script>
+  <script src="renderer.js"></script>
+</body>
+</html>
